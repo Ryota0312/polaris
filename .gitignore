@@ -1,0 +1,6 @@
+db/wds.csv
+env/
+settings.yml
+vf_test/
+
+log.pickle

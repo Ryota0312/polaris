@@ -1,0 +1,4 @@
+ACCESS_LOG_FILE_PATH: /path/to/CFAL_log
+DST: vf_test # 仮想フォルダの生成先
+SRC: db/wds.csv
+prev_date: 2019-09-03 13:51:28.530164 # 初回はログの最初より古い時間を設定

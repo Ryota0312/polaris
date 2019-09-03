@@ -1,0 +1,55 @@
+#!./env/bin/python3
+
+import sys
+import yaml
+import os
+import numpy as np
+sys.path.append('.')
+from lib.AccessLogAnalyzer import *
+from lib.WDEstimator import *
+import datetime
+
+try:
+    settings = yaml.load(open('settings.yml','r'), Loader=yaml.SafeLoader)
+except:
+    print("Error: Cannnot open log file. Check your settings.")
+    sys.exit()
+
+logfile = settings['ACCESS_LOG_FILE_PATH']
+src = settings["SRC"]
+    
+try:
+    print("Loading", flush=True)
+    logs = LogParser(sep=",")
+    if os.path.exists("log.pickle"):
+        logs.load()
+        logs.update(logfile)
+        logs.dump()
+    else:
+        logs.parse(logfile)
+        logs.dump()
+    print("Loaded",len(logs.log),"logs")
+except:
+    print("Error: Failed to load log dump data. ")
+    sys.exit()
+
+#prev_date =  datetime.datetime.strptime(settings["prev_date"], "%Y-%m-%d %H:%M:%S.%f")
+prev_date = settings["prev_date"]
+
+#records = logs.log.op_filter("\AMODIFY\Z")
+now_date = datetime.datetime.now()
+records = logs.log.op_filter("\ACreated\Z|\AUpdated\Z").time_filter(prev_date, now_date)
+if len(records) == 0: sys.exit(0)
+
+settings["prev_date"] = now_date
+with open("settings.yml", "w") as yf:
+    yaml.dump(settings, yf, default_flow_style=False)
+
+estimated_wd = []
+#print("----------estimated_wd----------")
+wd = WDEstimator(records, [7, 5, 3, 1], 19)
+
+with open(src, 'a') as f:
+    for d in wd.workingdir:
+        estimated_wd.append(d)
+        print(d + "," + str(wd.timelines[d]), file=f)
