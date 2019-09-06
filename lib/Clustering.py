@@ -9,7 +9,10 @@ class ClusterHierarchy:
     def __init__(self, label, data, ans_label):
         self.label = label[:]
         self.data = data
-        self.ans_label = ans_label[:]
+        if ans_label==None:
+            self.ans_label = ans_label
+        else:
+            self.ans_label = ans_label[:]
         self.answer_set = []
         self.cluster = None
         self.linked = None
@@ -18,17 +21,18 @@ class ClusterHierarchy:
         self.purity = None
         self.ipurity = None
         self.fmeasure = None
-        anss = list(set(self.ans_label))
-        label_tmp = self.label[:]
-        anslabel_tmp = self.ans_label[:]
-        for ans in anss:
-            if ans=="None": continue
-            answer = []
-            for i in range(anslabel_tmp.count(ans)):
-                idx = anslabel_tmp.index(ans)
-                anslabel_tmp.pop(idx)
-                answer.append(label_tmp.pop(idx))
-            self.answer_set.append(answer)
+        if self.ans_label != None:
+            anss = list(set(self.ans_label))
+            label_tmp = self.label[:]
+            anslabel_tmp = self.ans_label[:]
+            for ans in anss:
+                if ans=="None": continue
+                answer = []
+                for i in range(anslabel_tmp.count(ans)):
+                    idx = anslabel_tmp.index(ans)
+                    anslabel_tmp.pop(idx)
+                    answer.append(label_tmp.pop(idx))
+                self.answer_set.append(answer)
 
     def linkage(self, method="average", metric="euclidean"):
         self.linked = linkage(self.data, method=method, metric=metric)
@@ -103,6 +107,17 @@ class ClusterHierarchy:
             print("\n--------------------Cluster", ci+1,"--------------------")
             for idx in indexes:
                 print(self.label[idx])
+
+    def get_cluster(self):
+        cluster = []
+        print(self.cluster)
+        for ci in range(max(self.cluster)):
+            elements = []
+            indexes = [i for i, x in enumerate(self.cluster) if x == (ci+1)]
+            for idx in indexes:
+                elements.append(self.label[idx])
+            cluster.append(elements)
+        return cluster
         
     def __cross_table(self, cluster, answer, ignore="None"):
         table = []

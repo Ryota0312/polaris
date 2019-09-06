@@ -1,0 +1,67 @@
+#!./env/bin/python3
+## クラスタリング
+import yaml
+import sys
+import os
+import datetime
+import shutil
+import numpy as np
+sys.path.append('.')
+from lib.AccessLogAnalyzer import *
+from lib.Clustering import *
+from lib.dir2vec import *
+
+# 設定ファイルのロード
+try:
+    settings = yaml.load(open('settings.yml','r'), Loader=yaml.SafeLoader)
+except:
+    print("Error: Cannnot open log file. Check your settings.")
+    sys.exit()
+
+logfile = settings['ACCESS_LOG_FILE_PATH']
+    
+try:
+    print("Loading", flush=True)
+    logs = LogParser(sep=",")
+    if os.path.exists("log.pickle"):
+        logs.load()
+        logs.update(logfile)
+        logs.dump()
+    else:
+        logs.parse(logfile)
+        logs.dump()
+    print("Loaded",len(logs.log),"logs")
+except:
+    print("Error: Failed to load log dump data. ")
+    sys.exit()
+
+dst = settings["DST"]
+f = open(settings["SRC"])
+wds = []
+for i, l in enumerate(f):
+    if i==0: continue
+    src = l.replace("\n", "")
+    srcl = src.split(",", 1)
+    wds.append(srcl[0])
+wds = np.unique(wds)
+
+# 特徴ベクトル作成
+vectorizer = Dir2Vec(wds, None, logs.log, pca_ncomponents=16)
+dirlist, worklist, vector = vectorizer.genvec()
+# クラスタリング
+#ch = ClusterHierarchy(dirlist, n_matrix[:,], worklist)
+ch = ClusterHierarchy(dirlist, vector[:,], worklist)
+ch.linkage(metric='cosine')
+#ch.fmax_div()
+ch.div(0.4)
+#ch.save_dendrogram()
+
+cluster = ch.get_cluster()
+
+## 作業別    
+path = "./" + dst + "/Clustering/"
+for i,c in enumerate(cluster):
+    cpath = path + "/Work" + str(i)
+    if not os.path.exists(cpath): os.makedirs(cpath)
+    for d in c:
+        if not os.path.exists(cpath + "/" + d.split("/")[-1]): os.symlink(d, cpath + "/" + d.split("/")[-1])

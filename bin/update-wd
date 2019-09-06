@@ -37,8 +37,11 @@ except:
 prev_date = settings["prev_date"]
 
 #records = logs.log.op_filter("\AMODIFY\Z")
-now_date = datetime.datetime.now()
-records = logs.log.op_filter("\ACreated\Z|\AUpdated\Z").time_filter(prev_date, now_date)
+if not prev_date == "initial":
+    now_date = datetime.datetime.now()
+    records = logs.log.op_filter("\ACreated\Z|\AUpdated\Z").time_filter(prev_date, now_date)
+else:
+    records = logs.log.op_filter("\ACreated\Z|\AUpdated\Z")
 if len(records) == 0: sys.exit(0)
 
 settings["prev_date"] = now_date
