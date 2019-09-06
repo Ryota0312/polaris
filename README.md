@@ -3,6 +3,12 @@
 + スクリプト名などが雑なので要修正
 + `CFAL` により履歴収集
   + http://github.com/Ryota0312/CFAL
+  
+## インストール
++ `$ git clone`
++ `$ python -m venv env`
++ `$ . env/bin/activate`
++ `$ pip install -r requirements.txt`
 
 ## 設定
 + `$ echo "PATH, ACTIVE_TIME" > db/wds.csv`
