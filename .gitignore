@@ -2,5 +2,5 @@ db/wds.csv
 env/
 settings.yml
 vf_test/
-
 log.pickle
+lib/__pycache__/

@@ -1,6 +1,8 @@
 # 仮想フォルダ生成システム
 + プロトタイプ
 + スクリプト名などが雑なので要修正
++ `CFAL` により履歴収集
+  + http://github.com/Ryota0312/CFAL
 
 ## 設定
 + `$ echo "PATH, ACTIVE_TIME" > db/wds.csv`
