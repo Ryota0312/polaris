@@ -3,6 +3,7 @@
 + スクリプト名などが雑なので要修正
 
 ## 設定
++ `$ echo "PATH, ACTIVE_TIME" > db/wds.csv`
 + `settings.yml` で設定．
   + `ACCESS_LOG_FILE_PATH` : アクセス履歴の場所
   + `DST` : 仮想フォルダ生成先
