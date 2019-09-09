@@ -25,7 +25,7 @@ for i, l in enumerate(f):
 
 ## 使用時期別
 year = 2019
-recent_path = "./" + dst + "/RecentWDs/"
+recent_path = dst + "/RecentWDs/"
 if os.path.exists(recent_path): shutil.rmtree(recent_path)
 if not os.path.exists(recent_path): os.makedirs(recent_path)
 for m in range(1,13):
@@ -34,7 +34,7 @@ for m in range(1,13):
         for at in wds[d]:
             # 月別
             if at[0].month <= m and at[1].month >= m:
-                path = "./" + dst + "/" + str(year) + "/" + str(m).rjust(2, '0')
+                path = dst + "/" + str(year) + "/" + str(m).rjust(2, '0')
                 if not os.path.exists(path): os.makedirs(path)
                 if not os.path.exists(path + "/" + d.split("/")[-1]): os.symlink(d, path + "/" + d.split("/")[-1])
             # 最近
