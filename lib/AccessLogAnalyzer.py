@@ -3,6 +3,9 @@ import datetime
 import time
 import numpy as np
 import pickle
+import os
+import sys
+app_home = os.path.abspath(os.path.join( os.path.dirname(os.path.abspath(__file__)) , ".." ))
 
 reg = r"(.*)(?:\.([^.]+$))"
 
@@ -128,11 +131,11 @@ class LogParser:
         return self.log
 
     def dump(self):
-        with open('log.pickle', mode='wb') as f:
+        with open(app_home + "/log.pickle", mode='wb') as f:
             pickle.dump(self.log, f)
 
     def load(self):
-        with open('log.pickle', mode='rb') as f:
+        with open(app_home + "/log.pickle", mode='rb') as f:
             self.log = pickle.load(f)
         return self.log
 

@@ -3,14 +3,15 @@
 import sys
 import yaml
 import os
-import numpy as np
-sys.path.append('.')
-from lib.AccessLogAnalyzer import *
-from lib.WDEstimator import *
 import datetime
+import numpy as np
+app_home = os.path.abspath(os.path.join( os.path.dirname(os.path.abspath(__file__)) , ".." ))
+sys.path.append(os.path.join(app_home,"lib"))
+from AccessLogAnalyzer import *
+from  WDEstimator import *
 
 try:
-    settings = yaml.load(open('settings.yml','r'), Loader=yaml.SafeLoader)
+    settings = yaml.load(open(app_home + '/settings.yml','r'), Loader=yaml.SafeLoader)
 except:
     print("Error: Cannnot open log file. Check your settings.")
     sys.exit()
@@ -21,7 +22,7 @@ src = settings["SRC"]
 try:
     print("Loading", flush=True)
     logs = LogParser(sep=",")
-    if os.path.exists("log.pickle"):
+    if os.path.exists(app_home + "/log.pickle"):
         logs.load()
         logs.update(logfile)
         logs.dump()
@@ -45,7 +46,7 @@ else:
 if len(records) == 0: sys.exit(0)
 
 settings["prev_date"] = now_date
-with open("settings.yml", "w") as yf:
+with open(app_home + "/settings.yml", "w") as yf:
     yaml.dump(settings, yf, default_flow_style=False)
 
 estimated_wd = []

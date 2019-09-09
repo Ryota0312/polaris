@@ -1,0 +1,18 @@
+#!/bin/bash
+
+SH_PATH=$(dirname $0)
+
+subcommand="$1"
+shift
+
+case $subcommand in
+    update-wd)
+	$SH_PATH/env/bin/python $SH_PATH/bin/update-wd
+	;;
+    create)
+	$SH_PATH/env/bin/python $SH_PATH/bin/create
+	;;
+    clustering)
+	$SH_PATH/env/bin/python $SH_PATH/bin/clustering
+	;;
+esac	      

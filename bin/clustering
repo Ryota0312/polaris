@@ -6,10 +6,11 @@ import os
 import datetime
 import shutil
 import numpy as np
-sys.path.append('.')
-from lib.AccessLogAnalyzer import *
-from lib.Clustering import *
-from lib.dir2vec import *
+app_home = os.path.abspath(os.path.join( os.path.dirname(os.path.abspath(__file__)) , ".." ))
+sys.path.append(os.path.join(app_home,"lib"))
+from AccessLogAnalyzer import *
+from Clustering import *
+from dir2vec import *
 
 # 設定ファイルのロード
 try:
@@ -23,7 +24,7 @@ logfile = settings['ACCESS_LOG_FILE_PATH']
 try:
     print("Loading", flush=True)
     logs = LogParser(sep=",")
-    if os.path.exists("log.pickle"):
+    if os.path.exists(app_home + "/log.pickle"):
         logs.load()
         logs.update(logfile)
         logs.dump()

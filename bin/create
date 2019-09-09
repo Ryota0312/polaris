@@ -4,10 +4,12 @@ import yaml
 import os
 import datetime
 import shutil
+import sys
+app_home = os.path.abspath(os.path.join( os.path.dirname(os.path.abspath(__file__)) , ".." ))
 
 # 設定ファイルのロード
 try:
-    settings = yaml.load(open('settings.yml','r'), Loader=yaml.SafeLoader)
+    settings = yaml.load(open(app_home + '/settings.yml','r'), Loader=yaml.SafeLoader)
 except:
     print("Error: Cannnot open log file. Check your settings.")
     sys.exit()
