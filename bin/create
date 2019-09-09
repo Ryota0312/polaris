@@ -40,4 +40,3 @@ for m in range(1,13):
             # 最近
             if at[0] > (datetime.datetime.now() - datetime.timedelta(days=21)):
                 if not os.path.exists(recent_path + "/" + d.split("/")[-1]): os.symlink(d, recent_path + "/" + d.split("/")[-1])
-    
