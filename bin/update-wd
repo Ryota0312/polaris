@@ -9,6 +9,7 @@ app_home = os.path.abspath(os.path.join( os.path.dirname(os.path.abspath(__file_
 sys.path.append(os.path.join(app_home,"lib"))
 from AccessLogAnalyzer import *
 from  WDEstimator import *
+import csvdb
 
 try:
     settings = yaml.load(open(app_home + '/settings.yml','r'), Loader=yaml.SafeLoader)
@@ -17,6 +18,7 @@ except:
     sys.exit()
 
 logfile = settings['ACCESS_LOG_FILE_PATH']
+db = csvdb.Database(settings["SRC"])
 src = settings["SRC"]
     
 try:
@@ -49,11 +51,14 @@ settings["prev_date"] = now_date
 with open(app_home + "/settings.yml", "w") as yf:
     yaml.dump(settings, yf, default_flow_style=False)
 
+# WD推定
 estimated_wd = []
-#print("----------estimated_wd----------")
 wd = WDEstimator(records, [7, 5, 3, 1], 19)
 
-with open(src, 'a') as f:
-    for d in wd.workingdir:
-        estimated_wd.append(d)
-        print(d + "," + str(wd.timelines[d]), file=f)
+# DBへ書き込み
+for d in wd.workingdir:
+    db.update(d, str(wd.timelines[d]))
+#with open(src, 'a') as f:
+#    for d in wd.workingdir:
+#        estimated_wd.append(d)
+#        print(d + "," + str(wd.timelines[d]), file=f)
