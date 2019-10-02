@@ -1,6 +1,5 @@
-from lib.AccessLogAnalyzer import *
-
 import numpy as np
+import re
 from sklearn.feature_extraction.text import CountVectorizer as CV
 from sklearn.feature_extraction.text import TfidfTransformer as TFIDF
 from sklearn.decomposition import PCA
