@@ -62,7 +62,7 @@ cluster = ch.get_cluster()
 ## 作業別    
 path = "./" + dst + "/Clustering/"
 for i,c in enumerate(cluster):
-    cpath = path + "/Work" + str(i)
+    cpath = path + "/Task" + str(i)
     if not os.path.exists(cpath): os.makedirs(cpath)
     for d in c:
         if not os.path.exists(cpath + "/" + d.split("/")[-1]): os.symlink(d, cpath + "/" + d.split("/")[-1])
