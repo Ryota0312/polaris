@@ -17,6 +17,7 @@ class WDEstimator:
 #        print("   Weight:", self.move_w) # 記録用
 #        print("Threshold:", self.move_th)# 記録用
         self.timelines = {}
+        self.timelines_idx = {}
         # WD 推定
         self.workingdir = self.estimate_wd()
 
@@ -45,8 +46,10 @@ class WDEstimator:
             wds = np.append(wds, est_wd)
             # WDごとにタイムラインを保存
             try:
+                self.timelines_idx[est_wd].append((left, int(interval[i])))
                 self.timelines[est_wd].append((self.log[left].timestamp, self.log[int(interval[i])].timestamp))
             except:
+                self.timelines_idx[est_wd] = [(left, int(interval[i]))]
                 self.timelines[est_wd] = [(self.log[left].timestamp, self.log[int(interval[i])].timestamp)]
         # collections.Counter の返り値は (要素, 要素数) のタプル
         return np.array([t[0] for t in collections.Counter(wds).most_common()])

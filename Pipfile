@@ -26,5 +26,5 @@ PyYAML = "==5.1.2"
 python_version = "3.6"
 
 [scripts]
-update = "python ./bin/update-wd"
+update = "python ./bin/update"
 create = "python ./bin/create"

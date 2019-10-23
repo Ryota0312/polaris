@@ -9,6 +9,7 @@ app_home = os.path.abspath(os.path.join( os.path.dirname(os.path.abspath(__file_
 sys.path.append(os.path.join(app_home,"lib"))
 from AccessLogAnalyzer import *
 from  WDEstimator import *
+from dir2vec import *
 import csvdb
 
 try:
@@ -47,18 +48,19 @@ else:
     records = logs.log.op_filter("\ACreated\Z|\AUpdated\Z")
 if len(records) == 0: sys.exit(0)
 
-settings["prev_date"] = now_date
-with open(app_home + "/settings.yml", "w") as yf:
-    yaml.dump(settings, yf, default_flow_style=False)
-
 # WD推定
-estimated_wd = []
 wd = WDEstimator(records, [7, 5, 3, 1], 19)
+print("Rec_true_size:", len(records))
+vectorizer = Dir2Vec(wd.workingdir, records, pca_ncomponents=16)
+
+features = vectorizer.get_features_from_timelines(wd.timelines_idx)
 
 # DBへ書き込み
 for d in wd.workingdir:
-    db.update(d, str(wd.timelines[d]))
-#with open(src, 'a') as f:
-#    for d in wd.workingdir:
-#        estimated_wd.append(d)
-#        print(d + "," + str(wd.timelines[d]), file=f)
+    tl = db.get(d) + wd.timelines[d]
+    ft = db.get(d) + list(features[d])
+    db.update(d, str(tl), str(ft))
+
+settings["prev_date"] = now_date
+with open(app_home + "/settings.yml", "w") as yf:
+    yaml.dump(settings, yf, default_flow_style=False)

@@ -110,7 +110,6 @@ class ClusterHierarchy:
 
     def get_cluster(self):
         cluster = []
-        print(self.cluster)
         for ci in range(max(self.cluster)):
             elements = []
             indexes = [i for i, x in enumerate(self.cluster) if x == (ci+1)]
