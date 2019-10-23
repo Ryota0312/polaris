@@ -1,9 +1,11 @@
 import csv
 import re
+from pathlib import Path
 
 class Database:
     def __init__(self, filename):
         self.filename = filename
+        Path(self.filename).touch()
         self.data = self.__read()
         # TODO: hash（1列目キー，2,3列目バリュー）として保持する方が効率良い
 
@@ -17,7 +19,7 @@ class Database:
             #    ret.append([l[0], l2[0], l2[1]])
             #return ret
             for i, line in enumerate(f):
-                if i==0: continue
+                #if i==0: continue
                 m = re.match("(.*),(\[.*\]),(\[.*\])", line)
                 ret.append([m.group(1), m.group(2), m.group(3)])
             return ret

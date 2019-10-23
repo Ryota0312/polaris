@@ -37,30 +37,48 @@ except:
     print("Error: Failed to load log dump data. ")
     sys.exit()
 
-#prev_date =  datetime.datetime.strptime(settings["prev_date"], "%Y-%m-%d %H:%M:%S.%f")
 prev_date = settings["prev_date"]
 
-#records = logs.log.op_filter("\AMODIFY\Z")
 if not prev_date == "initial":
     now_date = datetime.datetime.now()
     records = logs.log.op_filter("\ACreated\Z|\AUpdated\Z").time_filter(prev_date, now_date)
 else:
+    now_date = datetime.datetime.now()
     records = logs.log.op_filter("\ACreated\Z|\AUpdated\Z")
 if len(records) == 0: sys.exit(0)
 
-# WD推定
-wd = WDEstimator(records, [7, 5, 3, 1], 19)
-print("Rec_true_size:", len(records))
-vectorizer = Dir2Vec(wd.workingdir, records, pca_ncomponents=16)
+first = records[0].timestamp
+tail = records[-1].timestamp
+start = datetime.datetime(first.year, first.month, first.day, 0, 0, 0)
+end = datetime.datetime(first.year, first.month, first.day, 23, 59, 59)
+while(True):
+    # 1日分
+    oneday_rec = records.time_filter(start, end)
+    if len(oneday_rec) == 0:
+        start += datetime.timedelta(days=1)
+        if start > tail: break
+        end += datetime.timedelta(days=1)
+        continue
+    
+    # WD推定
+    wd = WDEstimator(oneday_rec, [7, 5, 3, 1], 19)
 
-features = vectorizer.get_features_from_timelines(wd.timelines_idx)
+    # 特徴抽出
+    vectorizer = Dir2Vec(wd.workingdir, oneday_rec, pca_ncomponents=16)
+    features = vectorizer.get_features_from_timelines(wd.timelines_idx)
 
-# DBへ書き込み
-for d in wd.workingdir:
-    tl = db.get(d) + wd.timelines[d]
-    ft = db.get(d) + list(features[d])
-    db.update(d, str(tl), str(ft))
+    # DBへ書き込み
+    for d in wd.workingdir:
+        tl = db.get(d) + wd.timelines[d]
+        ft = db.get(d) + list(features[d])
+        db.update(d, str(tl), str(ft))
 
+    # 1日ずらす
+    start += datetime.timedelta(days=1)
+    if start > tail: break
+    end += datetime.timedelta(days=1)
+
+# 更新した日時を記録
 settings["prev_date"] = now_date
 with open(app_home + "/settings.yml", "w") as yf:
     yaml.dump(settings, yf, default_flow_style=False)
