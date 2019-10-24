@@ -5,12 +5,17 @@ import yaml
 import os
 import datetime
 import numpy as np
+import logging.config
 app_home = os.path.abspath(os.path.join( os.path.dirname(os.path.abspath(__file__)) , ".." ))
 sys.path.append(os.path.join(app_home,"lib"))
 from AccessLogAnalyzer import *
 from  WDEstimator import *
 from dir2vec import *
 import csvdb
+
+#App logger
+logging.config.fileConfig(app_home + '/logging.conf')
+logger = logging.getLogger()
 
 try:
     settings = yaml.load(open(app_home + '/settings.yml','r'), Loader=yaml.SafeLoader)
@@ -37,7 +42,12 @@ except:
     print("Error: Failed to load log dump data. ")
     sys.exit()
 
-prev_date = settings["prev_date"]
+# 前回の更新日時を取得
+prev_date = "initial"
+with open(app_home + "/log/app_log") as f:
+    for line in reversed(list(f)):
+        if "INFO:Update WD" in line:
+            prev_date =  datetime.datetime.strptime(line.split(",")[0], "%Y-%m-%d %H:%M:%S")
 
 if not prev_date == "initial":
     now_date = datetime.datetime.now()
@@ -79,6 +89,4 @@ while(True):
     end += datetime.timedelta(days=1)
 
 # 更新した日時を記録
-settings["prev_date"] = now_date
-with open(app_home + "/settings.yml", "w") as yf:
-    yaml.dump(settings, yf, default_flow_style=False)
+logger.info("Update WD")

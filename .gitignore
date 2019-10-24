@@ -4,3 +4,4 @@ settings.yml
 vf_test/
 log.pickle
 lib/__pycache__/
+log/app_log*
