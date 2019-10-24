@@ -17,7 +17,6 @@
   + `ACCESS_LOG_FILE_PATH` : アクセス履歴の場所(絶対パス)
   + `DST` : 仮想フォルダ生成先(絶対パス)
   + `SRC` : ワーキングディレクトリのデータベース(絶対パス)
-  + `prev_date` : 前回WD推定を行った日時を記録．初期は"initial"と設定しておく．
   
 ## 実行
 1. `$ pipenv run update`
