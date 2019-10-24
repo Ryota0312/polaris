@@ -45,9 +45,12 @@ for m in range(1,13):
                     if not os.path.exists(path + "/" + d.split("/")[-1]): os.symlink(d, path + "/" + d.split("/")[-1])
                 except:
                     print("Error:" + path + "/" + d.split("/")[-1] + "cannot make symlink")
-                    # 最近
+            # 最近
             if at[0] > (datetime.datetime.now() - datetime.timedelta(days=21)):
-                if not os.path.exists(recent_path + "/" + d.split("/")[-1]): os.symlink(d, recent_path + "/" + d.split("/")[-1])
+                try:
+                    if not os.path.exists(recent_path + "/" + d.split("/")[-1]): os.symlink(d, recent_path + "/" + d.split("/")[-1])
+                except:
+                    print("Error:" + path + "/" + d.split("/")[-1] + "cannot make symlink")
 
 features = {}
 for i, l in enumerate(db.data):
