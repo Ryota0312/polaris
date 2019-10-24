@@ -108,7 +108,10 @@ class LogParser:
         log = []
         access_log = open(logfile_path, "r")
         for line in access_log:
-            log_t = AccessLog(line.replace("\n",""), self.sepstr)
+            try:
+                log_t = AccessLog(line.replace("\n",""), self.sepstr)
+            except:
+                print("Error: Failed to read line in access_log")
             if len(log) > 0:
                 if log_t == log[len(log)-1]: continue
             log.append(log_t)
