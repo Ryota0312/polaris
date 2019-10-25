@@ -1,3 +1,10 @@
 ACCESS_LOG_FILE_PATH: /path/to/CFAL_log
 DST: /path/to/vf_test # 仮想フォルダの生成先
 SRC: path/to/db/wds.csv
+WD_DISCOVER_SETTINGS:
+  weight: [7, 5, 3, 1]
+  threshold: 19
+CLUSTERING_SETTINGS:
+  pca_nconponents: 16
+  div_threshold: 0.4
+  save_dendrogram: True
