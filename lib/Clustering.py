@@ -152,7 +152,7 @@ class ClusterHierarchy:
     def save_dendrogram(self):
         label_s = []
         for path in self.label:
-            label_s.append(re.sub(r'/home/ryota/.*/','',path))
+            label_s.append(re.sub(r'/home/ryota/.*/','',path)) # Please change to replace your home dir
         plt.figure(num=None, figsize=(16, 9), dpi=150, facecolor='w', edgecolor='k')
         dendrogram(self.linked, orientation='left', labels=label_s, leaf_font_size=8, color_threshold=self.threshold)
         plt.savefig("dendrogram.png")

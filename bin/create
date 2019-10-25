@@ -25,7 +25,6 @@ if not os.path.exists(dst): os.makedirs(dst)
 db = csvdb.Database(settings["SRC"])
 wds = {}
 for i, l in enumerate(db.data):
-    #if i==0: continue
     wds[l[0]] = eval(l[1])
 
 ## 使用時期別
@@ -56,17 +55,18 @@ features = {}
 for i, l in enumerate(db.data):
     #if i==0: continue
     features[l[0]] = eval(l[2])
-    
-vectorizer = Dir2Vec(list(features.keys()), None, pca_ncomponents=16)
+
+pca_n = settings['CLUSTERING_SETTINGS']['pca_nconponents']    
+vectorizer = Dir2Vec(list(features.keys()), None, pca_ncomponents=pca_n)
 dirlist, vector = vectorizer.genvec_from_features(list(features.values()))
 
 # クラスタリング
-#ch = ClusterHierarchy(dirlist, n_matrix[:,], worklist)
+div_threshold = settings['CLUSTERING_SETTINGS']['div_threshold']
+is_save_dendrogram = settings['CLUSTERING_SETTINGS']['save_dendrogram']
 ch = ClusterHierarchy(dirlist, vector[:,], None)
 ch.linkage(metric='cosine')
-#ch.fmax_div()
-ch.div(0.4)
-#ch.save_dendrogram()
+ch.div(div_threshold)
+if is_save_dendrogram: ch.save_dendrogram()
 
 cluster = ch.get_cluster()
 
