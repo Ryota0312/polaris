@@ -24,8 +24,7 @@ except:
     sys.exit()
 
 logfile = settings['ACCESS_LOG_FILE_PATH']
-db = csvdb.Database(settings["SRC"])
-src = settings["SRC"]
+db = csvdb.Database(settings["DB_PATH"])
     
 try:
     print("Loading", flush=True)

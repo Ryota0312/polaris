@@ -19,10 +19,10 @@ except:
     print("Error: Cannnot open log file. Check your settings.")
     sys.exit()
 
-dst = settings["DST"]
+dst = settings["VIRTUAL_FOLDER_PATH"]
 if not os.path.exists(dst): os.makedirs(dst)
 
-db = csvdb.Database(settings["SRC"])
+db = csvdb.Database(settings["DB_PATH"])
 wds = {}
 for i, l in enumerate(db.data):
     wds[l[0]] = eval(l[1])

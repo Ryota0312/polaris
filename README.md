@@ -15,8 +15,8 @@
 ## 設定
 + `settings.yml` で設定．
   + `ACCESS_LOG_FILE_PATH` : アクセス履歴の場所(絶対パス)
-  + `DST` : 仮想フォルダ生成先(絶対パス)
-  + `SRC` : ワーキングディレクトリのデータベース(絶対パス)
+  + `VIRTUAL_FOLDER_PATH` : 仮想フォルダ生成先(絶対パス)
+  + `DB_PATH` : ワーキングディレクトリのデータベース(絶対パス)
   
 ## 実行
 1. `$ pipenv run update`
