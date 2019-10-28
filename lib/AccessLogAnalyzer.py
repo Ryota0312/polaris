@@ -17,7 +17,7 @@ class AccessLog:
         column = [sep1[0],sep2[0],sep2[1]]
         self.timestamp = datetime.datetime.strptime(column[0], '%Y-%m-%dT%H:%M:%S')
         self.file_path = column[1]
-        self.operation = column[2]
+        self.operation = column[2].split(" ")
         m = re.match(reg, self.file_path)
         if m:
             self.ext = m.group(2)
@@ -81,8 +81,12 @@ class AccessLogCollection:
     def op_filter(self, operation):
         filtered = []
         for record in self.records:
-            if re.match(operation, record.operation):
-                filtered.append(record)
+            if type(operation) == list:
+                if set(operation)&set(record.operation) != set():
+                    filtered.append(record)
+            else:
+                if operation in record.operation:
+                    filtered.append(record)
         return AccessLogCollection(filtered)
 
     def ext_filter(self, ext):
