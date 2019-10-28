@@ -3,6 +3,9 @@
 + `CFAL` により履歴収集
   + http://github.com/Ryota0312/CFAL
   
+## Requirements
++ Python 3.x
+  
 ## インストール
 ### Use Pipenv(推奨)
 + `$ git clone git@github.com:Ryota0312/VFGen.git`
@@ -31,6 +34,13 @@
 ## 実行
 1. `$ pipenv run update`
 2. `$ pipenv run create`
+
+## 生成される仮想フォルダ
++ 使用時期
+  + RecentWDs: 直近3週間で使用したワーキングディレクトリ
+  + YYYY/MM: YYYY年のサブフォルダにMM月に使用したワーキングディレクトリが分類される
++ 作業内容
+ + Clustering: Task0〜にクラスタリング結果が提示される
 
 ## 各スクリプトの説明
 + `bin/update`
