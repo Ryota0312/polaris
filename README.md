@@ -8,6 +8,9 @@
 + `$ git clone git@github.com:Ryota0312/VFGen.git`
 + `$ pipenv install`
 
++ ※ how to get pipenv(example)
+  + `sudo pip3 install pipenv`
+
 ### システムにインストール
 + `$ git clone git@github.com:Ryota0312/VFGen.git`
 + `$ pip install -r requirements.txt`
