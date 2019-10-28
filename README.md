@@ -40,7 +40,7 @@
   + RecentWDs: 直近3週間で使用したワーキングディレクトリ
   + YYYY/MM: YYYY年のサブフォルダにMM月に使用したワーキングディレクトリが分類される
 + 作業内容
- + Clustering: Task0〜にクラスタリング結果が提示される
+  + Clustering: Task0〜にクラスタリング結果が提示される
 
 ## 各スクリプトの説明
 + `bin/update`
