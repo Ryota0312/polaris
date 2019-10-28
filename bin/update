@@ -20,6 +20,7 @@ try:
     settings = yaml.load(open(app_home + '/settings.yml','r'), Loader=yaml.SafeLoader)
 except:
     print("Error: Cannnot open log file. Check your settings.")
+    logger.error("Cannnot open log file. Check your settings.")
     sys.exit()
 
 logfile = settings['ACCESS_LOG_FILE_PATH']
@@ -84,6 +85,8 @@ while(True):
         ft = db.get(d, 2) + list(features[d])
         db.update(d, str(tl), str(ft))
 
+    logger.info("Update DB use " + str(start) + "to" + str(end) + "accesslog")
+        
     # 1日ずらす
     start += datetime.timedelta(days=1)
     if start > tail: break
