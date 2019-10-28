@@ -28,3 +28,4 @@ python_version = "3.6"
 [scripts]
 update = "python ./bin/update"
 create = "python ./bin/create"
+reset-db = "rm log.pickle log/app_log db/wds.csv"
