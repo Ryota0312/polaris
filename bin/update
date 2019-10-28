@@ -80,8 +80,8 @@ while(True):
 
     # DBへ書き込み
     for d in wd.workingdir:
-        tl = db.get(d) + wd.timelines[d]
-        ft = db.get(d) + list(features[d])
+        tl = db.get(d, 1) + wd.timelines[d]
+        ft = db.get(d, 2) + list(features[d])
         db.update(d, str(tl), str(ft))
 
     # 1日ずらす
