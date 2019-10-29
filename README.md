@@ -9,6 +9,7 @@
 ## インストール
 ### Use Pipenv(推奨)
 + `$ git clone git@github.com:Ryota0312/VFGen.git`
++ `$ cd VFGen`
 + `$ pipenv install`
 
 + ※ how to get pipenv(example)
@@ -16,6 +17,7 @@
 
 ### システムにインストール
 + `$ git clone git@github.com:Ryota0312/VFGen.git`
++ `$ cd VFGen`
 + `$ pip install -r requirements.txt`
 
 ## 設定
@@ -41,8 +43,8 @@
 
 or
 
-1. `python bin/update`
-2. `python bin/create`
+1. `$ python bin/update`
+2. `$ python bin/create`
 
 ## 生成される仮想フォルダ
 + 使用時期
