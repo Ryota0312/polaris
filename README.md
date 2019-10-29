@@ -22,6 +22,10 @@
 + `settings.yml` で設定．
   + `ACCESS_LOG_FILE_PATH` : アクセス履歴の場所(絶対パス)
   + `VIRTUAL_FOLDER_PATH` : 仮想フォルダ生成先(絶対パス)
+  + `VIRTUAL_FOLDER_NAME` : 仮想フォルダの名前
+	+ `CLUSTERING` : 作業内容別仮想フォルダの名前を設定
+	+ `USED` : 使用時期別仮想フォルダの名前を設定
+	+ `RECENT` : 最近使用したワーキングディレクトリの仮想フォルダの名前を設定
   + `DB_PATH` : ワーキングディレクトリのデータベース(絶対パス)
   + `WD_DISCOVER_SETTINGS` : ワーキングディレクトリ推定に関する設定
 	+ `weight` : 階層の深さによる重み．例) [7,5,3,1] は，1-2層目が7，2-3層目が5...4層目以降は1
@@ -34,6 +38,11 @@
 ## 実行
 1. `$ pipenv run update`
 2. `$ pipenv run create`
+
+or
+
+1. `python bin/update`
+2. `python bin/create`
 
 ## 生成される仮想フォルダ
 + 使用時期
