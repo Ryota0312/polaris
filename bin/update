@@ -47,6 +47,7 @@ with open(app_home + "/log/app_log") as f:
     for line in reversed(list(f)):
         if "INFO:Update WD" in line:
             prev_date =  datetime.datetime.strptime(line.split(",")[0], "%Y-%m-%d %H:%M:%S")
+            break
 
 if not prev_date == "initial":
     now_date = datetime.datetime.now()
