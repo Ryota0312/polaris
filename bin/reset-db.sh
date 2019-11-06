@@ -8,7 +8,7 @@ case "$yn" in
     [yY]*)
 	rm $SH_PATH/../log/*
 	rm $SH_PATH/../db/*
-	rm $SH_PATH/../log.lspickle
+	rm $SH_PATH/../log.pickle
 	echo "rm log/* db/* log.pickle"
     ;;
     *) echo "Canceled";;
