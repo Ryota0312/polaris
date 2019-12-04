@@ -12,3 +12,8 @@ CLUSTERING_SETTINGS:
   pca_nconponents: 16
   div_threshold: 0.4
   save_dendrogram: True
+CFAL_SETTINGS:
+  HOME_DIRECTORY: /home/yamada
+  IGNORE_LIST:
+    - /home/yamada/ignore_shitai/.*
+    - /home/yamada/ignore_file

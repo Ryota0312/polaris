@@ -27,6 +27,5 @@ click = "*"
 python_version = "3.6"
 
 [scripts]
-update = "python ./bin/update"
-create = "python ./bin/create"
+subaru = "python ./bin/subaru.py"
 reset-db = "rm log.pickle log/app_log db/wds.csv"

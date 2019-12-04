@@ -36,15 +36,26 @@
 	+ `pca_nconponents` : 主成分分析による次元圧縮の次元数
 	+ `div_threshold` : 階層的クラスタリングによるデンドログラムを分割する閾値
 	+ `save_dendrogram` : クラスタリング時にデンドログラムを保存するかどうか（True/False）
+  + `CFAL_SETTINGS` : CFALの設定
+	+ `HOME_DIRECTORY` : ホームディレクトリを設定
+	+ `IGNORE_LIST` : 監視対象から除外するファイルを正規表現で指定する．複数指定可能．
   
 ## 実行
-1. `$ pipenv run update`
-2. `$ pipenv run create`
+### CFALの起動
++ 起動
+  1. `$ pipenv run subaru cfal --init`
+  2. `$ pipenv run subaru cfal --start`
++ 停止
+  1. `$ pipenv run subaru cfal --stop`
+
+### 仮想フォルダの生成
+1. `$ pipenv run subaru update`
+2. `$ pipenv run subaru create`
 
 or
 
-1. `$ python bin/update`
-2. `$ python bin/create`
+1. `$ python bin/subaru.py update`
+2. `$ python bin/subaru.py create`
 
 ## 生成される仮想フォルダ
 + 使用時期
@@ -52,10 +63,3 @@ or
   + `USED/YYYY/MM` : YYYY年のサブフォルダにMM月に使用したワーキングディレクトリが分類される
 + 作業内容
   + `CLUSTERING` : Task0〜にクラスタリング結果が提示される
-
-## 各スクリプトの説明
-+ `bin/update`
-  ワーキングディレクトリを推定して，データベースに保存．ここで，各WDの特徴抽出も行う．
-  
-+ `bin/create`
-  仮想フォルダの生成．

@@ -5,3 +5,9 @@ vf_test/
 log.pickle
 lib/__pycache__/
 log/app_log*
+scripts/cfal/config.sh
+scripts/cfal/collect_file_access_log.service
+scripts/cfal/collect_file_access_log.sh
+scripts/cfal/access_log*
+scripts/cfal/error*
+scripts/cfal/collect_file_access_log.plist
