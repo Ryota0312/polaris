@@ -62,6 +62,20 @@ def cfal(cfal_cmd):
         subprocess.call(app_home + "/scripts/cfal/stop.sh")
         logger.info("Stop CFAL daemon.")
 
+@cmd.command(help='System auto settings')
+def init():
+    with open(app_home + "/scripts/service/subaru.service.tpl") as ftmp:
+        service_template = ftmp.read()
+        service_template = service_template.replace("APPLICATION_ROOT", app_home)
+        with open("/" + "/".join(app_home.split("/")[1:3]) + "/.config/systemd/user/subaru.service", "w+") as f:
+            f.write(service_template)
+    with open(app_home + "/scripts/service/subaru.timer.tpl") as ftmp:
+        timer_template = ftmp.read()
+        with open("/" + "/".join(app_home.split("/")[1:3]) + "/.config/systemd/user/subaru.timer", "w+") as f:
+            f.write(timer_template)
+    subprocess.call(["systemctl", "--user", "enable", "subaru.timer"])
+    subprocess.call(["systemctl", "--user", "start", "subaru.timer"])
+
 @cmd.command(help='Discovering WD and update DB.')
 def update():
     #App logger
