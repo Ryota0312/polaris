@@ -10,6 +10,7 @@ import sys
 import logging.config
 import datetime
 import numpy as np
+import subprocess
 app_home = os.path.abspath(os.path.join( os.path.dirname(os.path.abspath(__file__)) , ".." ))
 sys.path.append(os.path.join(app_home,"lib"))
 from AccessLogAnalyzer import *
@@ -18,10 +19,48 @@ from Clustering import *
 from dir2vec import *
 import csvdb
 
-
 @click.group()
 def cmd():
     pass
+
+@cmd.command(help='Collect file access log daemon.')
+@click.option('--start', 'cfal_cmd', flag_value='start')
+@click.option('--stop', 'cfal_cmd', flag_value='stop')
+@click.option('--init', 'cfal_cmd', flag_value='init')
+def cfal(cfal_cmd):
+    #App logger
+    logging.config.fileConfig(app_home + '/logging.conf')
+    logger = logging.getLogger()
+
+    # 設定ファイルのロード
+    try:
+        settings = yaml.load(open(app_home + '/settings.yml','r'), Loader=yaml.SafeLoader)
+    except:
+        print("Error: Cannnot open log file. Check your settings.")
+        logger.error("Cannnot open log file. Check your settings.")
+        sys.exit()
+
+    if cfal_cmd == "init":
+        cfal_dir = app_home + "/scripts/cfal"
+        home_dir = settings["CFAL_SETTINGS"]["HOME_DIRECTORY"]
+        ignore_list = ""
+        for ignore in settings["CFAL_SETTINGS"]["IGNORE_LIST"]:
+            ignore_list += '--exclude "' + ignore + '" '
+
+        with open(app_home + "/scripts/cfal/templates/config.sh.tpl") as ftmp:
+            config_template = ftmp.read()
+            config_template = config_template.replace("pyreplace_cfal_dir", cfal_dir).replace("pyreplace_home_dir", home_dir).replace("pyreplace_ignore_list", ignore_list)
+            with open(app_home + "/scripts/cfal/config.sh", "w+") as f:
+                f.write(config_template)
+
+        subprocess.call(app_home + "/scripts/cfal/initialize.sh")
+        logger.info("Initialize CFAL.")
+    elif cfal_cmd == "start":
+        subprocess.call(app_home + "/scripts/cfal/start.sh")
+        logger.info("Start CFAL daemon.")
+    elif cfal_cmd == "stop":
+        subprocess.call(app_home + "/scripts/cfal/stop.sh")
+        logger.info("Stop CFAL daemon.")
 
 @cmd.command(help='Discovering WD and update DB.')
 def update():
