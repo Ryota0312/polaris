@@ -94,25 +94,39 @@ def enable():
         with open(app_home + "/scripts/run.sh", "w+") as f:
             f.write(run_template)
     subprocess.call(["chmod", "+x", app_home + "/scripts/run.sh"])
-    
-    with open(app_home + "/scripts/service/subaru.service.tpl") as ftmp:
-        service_template = ftmp.read()
-        service_template = service_template.replace("APPLICATION_ROOT", app_home)
-        with open("/" + "/".join(app_home.split("/")[1:3]) + "/.config/systemd/user/subaru.service", "w+") as f:
-            f.write(service_template)
-    with open(app_home + "/scripts/service/subaru.timer.tpl") as ftmp:
-        timer_template = ftmp.read()
-        with open("/" + "/".join(app_home.split("/")[1:3]) + "/.config/systemd/user/subaru.timer", "w+") as f:
-            f.write(timer_template)
-            
-    subprocess.call(["systemctl", "--user", "daemon-reload"])
-    subprocess.call(["systemctl", "--user", "enable", "subaru.timer"])
-    subprocess.call(["systemctl", "--user", "start", "subaru.timer"])
+
+    system_name = str(subprocess.check_output(["uname"], universal_newlines=True)).replace("\n", "")
+
+    if system_name=="Linux":
+        with open(app_home + "/scripts/service/subaru.service.tpl") as ftmp:
+            service_template = ftmp.read()
+            service_template = service_template.replace("APPLICATION_ROOT", app_home)
+            with open("/" + "/".join(app_home.split("/")[1:3]) + "/.config/systemd/user/subaru.service", "w+") as f:
+                f.write(service_template)
+        with open(app_home + "/scripts/service/subaru.timer.tpl") as ftmp:
+            timer_template = ftmp.read()
+            with open("/" + "/".join(app_home.split("/")[1:3]) + "/.config/systemd/user/subaru.timer", "w+") as f:
+                f.write(timer_template)
+
+        subprocess.call(["systemctl", "--user", "daemon-reload"])
+        subprocess.call(["systemctl", "--user", "enable", "subaru.timer"])
+        subprocess.call(["systemctl", "--user", "start", "subaru.timer"])
+    elif system_name=="Darwin":
+        with open(app_home + "/scripts/service/subaru.plist.tpl") as ftmp:
+            service_template = ftmp.read()
+            service_template = service_template.replace("APPLICATION_ROOT", app_home)
+            with open("/" + "/".join(app_home.split("/")[1:3]) + "/Library/LaunchAgents/subaru.plist", "w+") as f:
+                f.write(service_template)
+            subprocess.call(["launchctl", "load", "subaru.plist"])
 
 @cmd.command(help='Disable subaru system.')
 def disable():
-    subprocess.call(["systemctl", "--user", "stop", "subaru.timer"])
-    subprocess.call(["systemctl", "--user", "disable", "subaru.timer"])
+    system_name = str(subprocess.check_output(["uname"], universal_newlines=True)).replace("\n", "")
+    if system_name=="Linux":
+        subprocess.call(["systemctl", "--user", "stop", "subaru.timer"])
+        subprocess.call(["systemctl", "--user", "disable", "subaru.timer"])
+    elif system_name=="Darwin":
+        subprocess.call(["launchctl", "unload", "subaru.plist"])
 
 @cmd.command(help='Discovering WD and update DB.')
 def update():
