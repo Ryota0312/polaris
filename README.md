@@ -5,6 +5,7 @@
   
 ## Requirements
 + Python 3.x
++ fswatch
   
 ## インストール
 ### Use Pipenv(推奨)
