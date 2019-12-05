@@ -23,13 +23,21 @@ import csvdb
 def cmd():
     pass
 
+@cmd.command(help='Initialize system')
+def init():
+    with open(app_home + "/scripts/templates/logging.conf.tpl") as ftmp:
+        logconf_template = ftmp.read()
+        logconf_template = logconf_template.replace("APPLICATION_ROOT", app_home)
+        with open(app_home + "/log/logging.conf", "w+") as f:
+            f.write(logconf_template)
+
 @cmd.command(help='Collect file access log daemon.')
 @click.option('--start', 'cfal_cmd', flag_value='start')
 @click.option('--stop', 'cfal_cmd', flag_value='stop')
 @click.option('--init', 'cfal_cmd', flag_value='init')
 def cfal(cfal_cmd):
     #App logger
-    logging.config.fileConfig(app_home + '/logging.conf')
+    logging.config.fileConfig(app_home + '/log/logging.conf')
     logger = logging.getLogger()
 
     # 設定ファイルのロード
@@ -54,6 +62,7 @@ def cfal(cfal_cmd):
                 f.write(config_template)
 
         subprocess.call(app_home + "/scripts/cfal/initialize.sh")
+        subprocess.call(["systemctl", "--user", "daemon-reload"])
         logger.info("Initialize CFAL.")
     elif cfal_cmd == "start":
         subprocess.call(app_home + "/scripts/cfal/start.sh")
@@ -61,9 +70,31 @@ def cfal(cfal_cmd):
     elif cfal_cmd == "stop":
         subprocess.call(app_home + "/scripts/cfal/stop.sh")
         logger.info("Stop CFAL daemon.")
+    else:
+        print("Require 1 cfal option.")
+        print("Show help : 'subaru cfal --help'")
 
-@cmd.command(help='System auto settings')
-def init():
+@cmd.command(help='Enable subaru system.')
+def enable():
+    #App logger
+    logging.config.fileConfig(app_home + '/log/logging.conf')
+    logger = logging.getLogger()
+
+    # 設定ファイルのロード
+    try:
+        settings = yaml.load(open(app_home + '/settings.yml','r'), Loader=yaml.SafeLoader)
+    except:
+        print("Error: Cannnot open log file. Check your settings.")
+        logger.error("Cannnot open log file. Check your settings.")
+        sys.exit()
+
+    with open(app_home + "/scripts/templates/run.sh.tpl") as ftmp:
+        run_template = ftmp.read()
+        run_template = run_template.replace("APPLICATION_ROOT", app_home).replace("PYTHON_PATH", settings["PYTHON_PATH"])
+        with open(app_home + "/scripts/run.sh", "w+") as f:
+            f.write(run_template)
+    subprocess.call(["chmod", "+x", app_home + "/scripts/run.sh"])
+    
     with open(app_home + "/scripts/service/subaru.service.tpl") as ftmp:
         service_template = ftmp.read()
         service_template = service_template.replace("APPLICATION_ROOT", app_home)
@@ -73,13 +104,20 @@ def init():
         timer_template = ftmp.read()
         with open("/" + "/".join(app_home.split("/")[1:3]) + "/.config/systemd/user/subaru.timer", "w+") as f:
             f.write(timer_template)
+            
+    subprocess.call(["systemctl", "--user", "daemon-reload"])
     subprocess.call(["systemctl", "--user", "enable", "subaru.timer"])
     subprocess.call(["systemctl", "--user", "start", "subaru.timer"])
+
+@cmd.command(help='Disable subaru system.')
+def disable():
+    subprocess.call(["systemctl", "--user", "stop", "subaru.timer"])
+    subprocess.call(["systemctl", "--user", "disable", "subaru.timer"])
 
 @cmd.command(help='Discovering WD and update DB.')
 def update():
     #App logger
-    logging.config.fileConfig(app_home + '/logging.conf')
+    logging.config.fileConfig(app_home + '/log/logging.conf')
     logger = logging.getLogger()
 
     try:
@@ -165,7 +203,7 @@ def update():
 @cmd.command(help="Create virtual folder.")
 def create():
     #App logger
-    logging.config.fileConfig(app_home + '/logging.conf')
+    logging.config.fileConfig(app_home + '/log/logging.conf')
     logger = logging.getLogger()
 
     # 設定ファイルのロード

@@ -3,4 +3,4 @@ Description=Create virtual folder system.
 
 [Service]
 Type=oneshot
-ExecStart=/bin/sh -c 'exec APPLICATION_ROOT/run.sh'
+ExecStart=/bin/sh -c 'exec APPLICATION_ROOT/scripts/run.sh'

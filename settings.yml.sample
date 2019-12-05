@@ -17,3 +17,4 @@ CFAL_SETTINGS:
   IGNORE_LIST:
     - /home/yamada/ignore_shitai/.*
     - /home/yamada/ignore_file
+PYTHON_PATH: /path/to/python # result of which python

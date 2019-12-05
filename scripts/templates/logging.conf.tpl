@@ -12,7 +12,7 @@ level=DEBUG
 class=logging.handlers.RotatingFileHandler
 level=DEBUG
 formatter=logFormatter
-args=('log/app_log', 'a', 1000000, 5)
+args=('APPLICATION_ROOT/log/app_log', 'a', 1000000, 5)
 
 [formatters]
 keys=logFormatter
