@@ -39,16 +39,27 @@
   + `CFAL_SETTINGS` : CFALの設定
 	+ `HOME_DIRECTORY` : ホームディレクトリを設定
 	+ `IGNORE_LIST` : 監視対象から除外するファイルを正規表現で指定する．複数指定可能．
+  + `PYTHON_PATH` : pythonのパス．`$ which python` の結果．仮想環境を用いている場合 `$ pipenv run which python` など．
   
 ## 実行
+### 初期化
+`$ pipenv run subaru init`
+
 ### CFALの起動
 + 起動
   1. `$ pipenv run subaru cfal --init`
   2. `$ pipenv run subaru cfal --start`
 + 停止
   1. `$ pipenv run subaru cfal --stop`
+  
+### システムの有効化/無効化
++ 有効化
+  + `$ pipenv run subaru enable`
 
-### 仮想フォルダの生成
++ 無効化
+  + `$ pipenv run subaru disable`
+
+### 仮想フォルダの生成(手動)
 1. `$ pipenv run subaru update`
 2. `$ pipenv run subaru create`
 
