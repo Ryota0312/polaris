@@ -54,6 +54,7 @@ def cfal(cfal_cmd):
         ignore_list = ""
         for ignore in settings["CFAL_SETTINGS"]["IGNORE_LIST"]:
             ignore_list += '--exclude "' + ignore + '" '
+        ignore_list += '--exclude "' + settings["VIRTUAL_FOLDER_PATH"] + '/.*" '
 
         with open(app_home + "/scripts/cfal/templates/config.sh.tpl") as ftmp:
             config_template = ftmp.read()
