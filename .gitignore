@@ -6,6 +6,7 @@ log.pickle
 lib/__pycache__/
 log/app_log*
 log/logging.conf
+scripts/run.sh
 scripts/cfal/config.sh
 scripts/cfal/collect_file_access_log.service
 scripts/cfal/collect_file_access_log.sh
