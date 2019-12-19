@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>subaru</string>
+    <string>polaris</string>
     <key>ProgramArguments</key>
     <array>
         <string>APPLICATION_ROOT/scripts/run.sh</string>

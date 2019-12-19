@@ -78,31 +78,31 @@ $ brew install fswatch
 ## 実行
 ### 初回起動時
 ```
-$ pipenv run subaru init
-$ pipenv run subaru cfal --init
-$ pipenv run subaru cfal --start
-$ pipenv run subaru enable
+$ pipenv run polaris init
+$ pipenv run polaris cfal --init
+$ pipenv run polaris cfal --start
+$ pipenv run polaris enable
 ```
 
 ### システムの有効化/無効化
 + 有効化
-  + `$ pipenv run subaru enable`
+  + `$ pipenv run polaris enable`
 
 + 無効化
-  + `$ pipenv run subaru disable`
+  + `$ pipenv run polaris disable`
 
 ### CFALの起動/停止
 + `CFAL`は，元々以下のリポジトリで開発していたが，本システムに統合した．
   + http://github.com/Ryota0312/CFAL
 + 起動
-  1. `$ pipenv run subaru cfal --init`
-  2. `$ pipenv run subaru cfal --start`
+  1. `$ pipenv run polaris cfal --init`
+  2. `$ pipenv run polaris cfal --start`
 + 停止
-  1. `$ pipenv run subaru cfal --stop`
+  1. `$ pipenv run polaris cfal --stop`
   
 ### 仮想フォルダの生成(手動)
-1. `$ pipenv run subaru update`
-2. `$ pipenv run subaru create`
+1. `$ pipenv run polaris update`
+2. `$ pipenv run polaris create`
 
 ## トラブルシューティング
 ## Linux で「inotify_add_watch: デバイスに空き領域がありません」というエラーが出る場合

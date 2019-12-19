@@ -4,6 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+scikit-optimize = "*"
 
 [packages]
 joblib = "==0.13.2"
@@ -27,5 +28,5 @@ click = "*"
 python_version = "3.6"
 
 [scripts]
-subaru = "python ./bin/subaru.py"
+polaris = "python ./bin/polaris.py"
 reset-db = "rm log.pickle log/app_log db/wds.csv"

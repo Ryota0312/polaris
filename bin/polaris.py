@@ -73,9 +73,9 @@ def cfal(cfal_cmd):
         logger.info("Stop CFAL daemon.")
     else:
         print("Require 1 cfal option.")
-        print("Show help : 'subaru cfal --help'")
+        print("Show help : 'polaris cfal --help'")
 
-@cmd.command(help='Enable subaru system.')
+@cmd.command(help='Enable polaris system.')
 def enable():
     #App logger
     logging.config.fileConfig(app_home + '/log/logging.conf')
@@ -99,35 +99,35 @@ def enable():
     system_name = str(subprocess.check_output(["uname"], universal_newlines=True)).replace("\n", "")
 
     if system_name=="Linux":
-        with open(app_home + "/scripts/service/subaru.service.tpl") as ftmp:
+        with open(app_home + "/scripts/service/polaris.service.tpl") as ftmp:
             service_template = ftmp.read()
             service_template = service_template.replace("APPLICATION_ROOT", app_home)
-            with open("/" + "/".join(app_home.split("/")[1:3]) + "/.config/systemd/user/subaru.service", "w+") as f:
+            with open("/" + "/".join(app_home.split("/")[1:3]) + "/.config/systemd/user/polaris.service", "w+") as f:
                 f.write(service_template)
-        with open(app_home + "/scripts/service/subaru.timer.tpl") as ftmp:
+        with open(app_home + "/scripts/service/polaris.timer.tpl") as ftmp:
             timer_template = ftmp.read()
-            with open("/" + "/".join(app_home.split("/")[1:3]) + "/.config/systemd/user/subaru.timer", "w+") as f:
+            with open("/" + "/".join(app_home.split("/")[1:3]) + "/.config/systemd/user/polaris.timer", "w+") as f:
                 f.write(timer_template)
 
         subprocess.call(["systemctl", "--user", "daemon-reload"])
-        subprocess.call(["systemctl", "--user", "enable", "subaru.timer"])
-        subprocess.call(["systemctl", "--user", "start", "subaru.timer"])
+        subprocess.call(["systemctl", "--user", "enable", "polaris.timer"])
+        subprocess.call(["systemctl", "--user", "start", "polaris.timer"])
     elif system_name=="Darwin":
-        with open(app_home + "/scripts/service/subaru.plist.tpl") as ftmp:
+        with open(app_home + "/scripts/service/polaris.plist.tpl") as ftmp:
             service_template = ftmp.read()
             service_template = service_template.replace("APPLICATION_ROOT", app_home)
-            with open("/" + "/".join(app_home.split("/")[1:3]) + "/Library/LaunchAgents/subaru.plist", "w+") as f:
+            with open("/" + "/".join(app_home.split("/")[1:3]) + "/Library/LaunchAgents/polaris.plist", "w+") as f:
                 f.write(service_template)
-            subprocess.call(["launchctl", "load", "subaru.plist"])
+            subprocess.call(["launchctl", "load", "polaris.plist"])
 
-@cmd.command(help='Disable subaru system.')
+@cmd.command(help='Disable polaris system.')
 def disable():
     system_name = str(subprocess.check_output(["uname"], universal_newlines=True)).replace("\n", "")
     if system_name=="Linux":
-        subprocess.call(["systemctl", "--user", "stop", "subaru.timer"])
-        subprocess.call(["systemctl", "--user", "disable", "subaru.timer"])
+        subprocess.call(["systemctl", "--user", "stop", "polaris.timer"])
+        subprocess.call(["systemctl", "--user", "disable", "polaris.timer"])
     elif system_name=="Darwin":
-        subprocess.call(["launchctl", "unload", "subaru.plist"])
+        subprocess.call(["launchctl", "unload", "polaris.plist"])
 
 @cmd.command(help='Discovering WD and update DB.')
 def update():
