@@ -1,10 +1,41 @@
 # 仮想フォルダ生成システム
-本システムは，計算機内のワーキングディレクトリを分類し，仮想フォルダとして提示する．
++ 本システムは，計算機内のワーキングディレクトリを分類し，仮想フォルダとして提示する．
++ 仮想フォルダは，実際のワーキングディレクトリへのシンボリックリンクにより作成される．このため，仮想フォルダ自体を削除しても，元のフォルダへの影響は無い．
++ 以下の3種類の仮想フォルダが生成される．
+  + 使用時期
+	+ `RECENT` : 直近3週間で使用したワーキングディレクトリ
+	+ `USED/YYYY/MM` : YYYY年のサブフォルダにMM月に使用したワーキングディレクトリが分類される
+  + 作業内容
+	+ `CLUSTERING` : Task0〜にクラスタリング結果が提示される
   
 ## Requirements
 + Python 3.x
 + fswatch
+  + https://github.com/emcrisostomo/fswatch
   
+## Install fswatch
+### Linux
+1. `$ sudo apt install fswatch`
+
+aptでインストールできない場合，
+
+1. `$ wget https://github.com/emcrisostomo/fswatch/releases/download/1.14.0/fswatch-1.14.0.tar.gz`
+2. `$ tar -zxvf fswatch-1.14.0.tar.gz`
+3. `$ cd fswatch-1.14.0`
+4. `$ ./configure`
+5. `$ make`
+6. `$ sudo make install`
+7. `$ sudo ldconfig`
+
+### Mac OS X
+```
+# MacPorts
+$ port install fswatch
+	
+# Homebrew
+$ brew install fswatch
+```
+
 ## インストール
 ### Use Pipenv(推奨)
 + `$ git clone git@github.com:Ryota0312/VFGen.git`
@@ -45,10 +76,22 @@
   + `save_dendrogram` : クラスタリング時にデンドログラムを保存するかどうか（True/False）
   
 ## 実行
-### 初期化
-`$ pipenv run subaru init`
+### 初回起動時
+```
+$ pipenv run subaru init
+$ pipenv run subaru cfal --init
+$ pipenv run subaru cfal --start
+$ pipenv run subaru enable
+```
 
-### CFALの起動
+### システムの有効化/無効化
++ 有効化
+  + `$ pipenv run subaru enable`
+
++ 無効化
+  + `$ pipenv run subaru disable`
+
+### CFALの起動/停止
 + `CFAL`は，元々以下のリポジトリで開発していたが，本システムに統合した．
   + http://github.com/Ryota0312/CFAL
 + 起動
@@ -57,25 +100,16 @@
 + 停止
   1. `$ pipenv run subaru cfal --stop`
   
-### システムの有効化/無効化
-+ 有効化
-  + `$ pipenv run subaru enable`
-
-+ 無効化
-  + `$ pipenv run subaru disable`
-
 ### 仮想フォルダの生成(手動)
 1. `$ pipenv run subaru update`
 2. `$ pipenv run subaru create`
 
-or
+## トラブルシューティング
+## Linux で「inotify_add_watch: デバイスに空き領域がありません」というエラーが出る場合
++ `/proc/sys/fs/inotify/max_user_watches` の値が小さいことが原因で発生している．
 
-1. `$ python bin/subaru.py update`
-2. `$ python bin/subaru.py create`
+1. `$ sudo emacs /etc/sysctl.conf`
 
-## 生成される仮想フォルダ
-+ 使用時期
-  + `RECENT` : 直近3週間で使用したワーキングディレクトリ
-  + `USED/YYYY/MM` : YYYY年のサブフォルダにMM月に使用したワーキングディレクトリが分類される
-+ 作業内容
-  + `CLUSTERING` : Task0〜にクラスタリング結果が提示される
+2. `fs.inotify.max_user_watches = XXXXXX` を追記．`XXXXXX` はホームディレクトリ以下のファイル数程度が良いはず．
+
+3. `sudo /sbin/sysctl -p`
