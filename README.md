@@ -38,16 +38,16 @@ $ brew install fswatch
 
 ## インストール
 ### Use Pipenv(推奨)
-+ `$ git clone git@github.com:Ryota0312/VFGen.git`
-+ `$ cd VFGen`
++ `$ git clone git@github.com:Ryota0312/polaris.git`
++ `$ cd polaris`
 + `$ pipenv install`
 
 + ※ how to get pipenv(example)
   + `sudo pip3 install pipenv`
 
 ### システムにインストール
-+ `$ git clone git@github.com:Ryota0312/VFGen.git`
-+ `$ cd VFGen`
++ `$ git clone git@github.com:Ryota0312/polaris.git`
++ `$ cd polaris`
 + `$ pip install -r requirements.txt`
 
 ## 設定
