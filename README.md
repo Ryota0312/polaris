@@ -113,3 +113,9 @@ $ pipenv run polaris enable
 2. `fs.inotify.max_user_watches = XXXXXX` を追記．`XXXXXX` はホームディレクトリ以下のファイル数程度が良いはず．
 
 3. `sudo /sbin/sysctl -p`
+
+## ImportError: No module named 'Tkinter'
+```
+$ sudo apt-get install tk-dev
+$ sudo apt-get install python3-tk
+```
