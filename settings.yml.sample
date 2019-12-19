@@ -1,20 +1,23 @@
-ACCESS_LOG_FILE_PATH: /path/to/access_log
+##### Required settings #####
+PYTHON_PATH: /path/to/python # result of which python
 VIRTUAL_FOLDER_PATH: /path/to/virtual_folder
+ACCESS_LOG_FILE_PATH: /path/to/access_log
+DB_PATH: /path/to/db/wds.csv
+CFAL_SETTINGS:
+  HOME_DIRECTORY: /home/yamada
+  IGNORE_LIST:
+    - /home/yamada/ignore_shitai/.*
+    - /home/yamada/ignore_file
+
+##### Custom settings #####
 VIRTUAL_FOLDER_NAME:
   CLUSTERING: 作業内容別
   USED: 使用時期別
   RECENT: 最近使用したWD
-DB_PATH: /path/to/db/wds.csv
 WD_DISCOVER_SETTINGS:
   weight: [7, 5, 3, 1]
   threshold: 19
 CLUSTERING_SETTINGS:
   pca_nconponents: 16
   div_threshold: 0.4
-  save_dendrogram: True
-CFAL_SETTINGS:
-  HOME_DIRECTORY: /home/yamada
-  IGNORE_LIST:
-    - /home/yamada/ignore_shitai/.*
-    - /home/yamada/ignore_file
-PYTHON_PATH: /path/to/python # result of which python
+  save_dendrogram: False
