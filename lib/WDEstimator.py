@@ -9,11 +9,12 @@ class WorkingDir:
         self.logs = logs
 
 class WDEstimator:
-    def __init__(self, access_log, move_weight, move_threshold):
+    def __init__(self, access_log, move_weight, move_threshold, density_threshold=False):
         self.log = access_log
         self.move_w = move_weight
         self.move_w_const_p = len(move_weight)
         self.move_th = move_threshold
+        self.density_threshold = density_threshold
 #        print("   Weight:", self.move_w) # 記録用
 #        print("Threshold:", self.move_th)# 記録用
         self.timelines = {}
@@ -40,7 +41,10 @@ class WDEstimator:
             # 履歴数が少ないタイムラインを無視
             #if interval[i] - left < 5: continue
             # Unmanaged なタイムラインを無視
-            if self.__is_unmanaged(left, int(interval[i])): continue
+            if self.density_threshold:
+                if self.__is_unmanaged_density(left, int(interval[i])): continue
+            else:
+                if self.__is_unmanaged(left, int(interval[i])): continue
             # タイムラインの最上層共通フォルダをWDとして推定
             est_wd = self.__representative_dir(left, int(interval[i]))
             wds = np.append(wds, est_wd)
@@ -181,3 +185,15 @@ class WDEstimator:
     # タイムラインのすべての隣接する更新時刻が1秒以下なら Unmanaged == True
     def __is_unmanaged(self, left, right):
         return set([(self.log[i+1].timestamp-self.log[i].timestamp)<=datetime.timedelta(seconds=1) for i in range(left,right+1,1) if i<right-1])=={True}
+
+    # タイムラインの更新密度が閾値以上なら Unmanaged == True
+    def __is_unmanaged_density(self, left, right):
+        sec = self.log[right].timestamp - self.log[left].timestamp
+        if sec.total_seconds() == 0:
+            return False # 0 div error
+        n_updates = right - left + 1
+        density = n_updates / sec.total_seconds()
+        if density > self.density_threshold:
+            return True
+        else:
+            return False
