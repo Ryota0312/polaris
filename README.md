@@ -69,7 +69,8 @@ $ brew install fswatch
   + `RECENT` : 最近使用したワーキングディレクトリの仮想フォルダの名前を設定
 + `WD_DISCOVER_SETTINGS` : ワーキングディレクトリ推定に関する設定
   + `weight` : 階層の深さによる重み．例) [7,5,3,1] は，1-2層目が7，2-3層目が5...4層目以降は1
-  + `threshold` : 分割の閾値
+  + `move_threshold` : 分割の閾値
+  + `density_threshold` : 機械的なファイル生成とみなすの閾値
 + `CLUSTERING_SETTINGS` : クラスタリングに関する設定
   + `pca_nconponents` : 主成分分析による次元圧縮の次元数
   + `div_threshold` : 階層的クラスタリングによるデンドログラムを分割する閾値
