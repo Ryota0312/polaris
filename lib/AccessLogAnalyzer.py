@@ -5,7 +5,6 @@ import numpy as np
 import pickle
 import os
 import sys
-app_home = os.path.abspath(os.path.join( os.path.dirname(os.path.abspath(__file__)) , ".." ))
 
 reg = r"(.*)(?:\.([^.]+$))"
 
@@ -137,12 +136,12 @@ class LogParser:
         self.log.extend(alc)
         return self.log
 
-    def dump(self):
-        with open(app_home + "/log.pickle", mode='wb') as f:
+    def dump(self, pickle_file):
+        with open(pickle_file, mode='wb') as f:
             pickle.dump(self.log, f)
 
-    def load(self):
-        with open(app_home + "/log.pickle", mode='rb') as f:
+    def load(self, pickle_file):
+        with open(pickle_file, mode='rb') as f:
             self.log = pickle.load(f)
         return self.log
 

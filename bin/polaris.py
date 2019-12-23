@@ -149,12 +149,12 @@ def update():
         print("Loading", flush=True)
         logs = LogParser(sep=",")
         if os.path.exists(app_home + "/log.pickle"):
-            logs.load()
+            logs.load(app_home + "/log.pickle")
             logs.update(logfile)
-            logs.dump()
+            logs.dump(app_home + "/log.pickle")
         else:
             logs.parse(logfile)
-            logs.dump()
+            logs.dump(app_home + "/log.pickle")
         print("Loaded",len(logs.log),"logs")
     except:
         print("Error: Failed to load log dump data. ")
