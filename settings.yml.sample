@@ -17,6 +17,7 @@ VIRTUAL_FOLDER_NAME:
 WD_DISCOVER_SETTINGS:
   weight: [7, 5, 3, 1]
   threshold: 19
+  density_threshold: 0.7
 CLUSTERING_SETTINGS:
   pca_nconponents: 16
   div_threshold: 0.4

@@ -191,8 +191,9 @@ def update():
 
         # WD推定
         weight = settings['WD_DISCOVER_SETTINGS']['weight']
-        threshold = settings['WD_DISCOVER_SETTINGS']['threshold']
-        wd = WDEstimator(oneday_rec, weight, threshold)
+        move_threshold = settings['WD_DISCOVER_SETTINGS']['move_threshold']
+        density_threshold = settings['WD_DISCOVER_SETTINGS']['density_threshold']
+        wd = WDEstimator(oneday_rec, weight, move_threshold, density_threshold)
 
         # 特徴抽出
         pca_n = settings['CLUSTERING_SETTINGS']['pca_nconponents']
