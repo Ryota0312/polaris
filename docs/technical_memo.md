@@ -1,7 +1,7 @@
 # Technical Memo
-リポジトリ内の各ファイルの説明を述べる．
-
 ## ディレクトリ構成
++ リポジトリ内の各ファイルの説明を述べる．
+
 ```
 .
 ├── Pipfile
@@ -172,10 +172,27 @@ Options:
 ### `WDEstimator.py`
 + ワーキングディレクトリ推定を行う．
 + `class WDEstimator`
+  + サンプルコード
+	
+	```
+	# WD推定
+	weight = settings['WD_DISCOVER_SETTINGS']['weight']
+	move_threshold = settings['WD_DISCOVER_SETTINGS']['move_threshold']
+	density_threshold = settings['WD_DISCOVER_SETTINGS']['density_threshold']
+	wd = WDEstimator(oneday_rec, weight, move_threshold, density_threshold) # 推定されたワーキングディレクトリを返却
+	```
+	
 ### `dir2vec.py`
 + 特徴ベクトルを作成する．
 + `class Dir2Vec`
   + ディレクトリのリストと`AccessLogCollection`を渡すと特徴ベクトルを返却する．
+	+ サンプルコード
+	
+	```
+	# 特徴ベクトル作成
+	vectorizer = Dir2Vec(list(features.keys()), None, pca_ncomponents=pca_n)
+    dirlist, vector = vectorizer.genvec_from_features(list(features.values()))
+	```
 
 ### `Clustering.py`
 + クラスタリングを行う．
@@ -185,9 +202,6 @@ Options:
   + サンプルコード
 	
 	```
-	# 特徴ベクトル作成
-	vectorizer = Dir2Vec(list(features.keys()), None, pca_ncomponents=pca_n)
-    dirlist, vector = vectorizer.genvec_from_features(list(features.values()))
 	#クラスタリング
     ch = ClusterHierarchy(dirlist, vector[:,], None)
     ch.linkage(metric='cosine')
